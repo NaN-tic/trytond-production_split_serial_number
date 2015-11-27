@@ -1,0 +1,7 @@
+# 
+msgid ""
+msgstr "Content-Type: text/plain; charset=utf-8\n"
+
+msgctxt "field:production.split.start,quantity_readonly:"
+msgid "Quantity Readonly"
+msgstr "Quantitat només lectura"
