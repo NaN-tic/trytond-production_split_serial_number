@@ -1,11 +1,9 @@
 # The COPYRIGHT file at the top level of this repository contains the full
 # copyright notices and license terms.
-from trytond.model import fields
 from trytond.pool import Pool, PoolMeta
-from trytond.pyson import Eval
 from trytond.transaction import Transaction
 
-__all__ = ['Production', 'SplitProductionStart', 'SplitProduction']
+__all__ = ['Production', 'SplitProduction']
 __metaclass__ = PoolMeta
 
 
@@ -32,22 +30,6 @@ class Production:
                 output.save()
 
 
-class SplitProductionStart:
-    __name__ = 'production.split.start'
-
-    quantity_readonly = fields.Boolean('Quantity Readonly')
-
-    @classmethod
-    def __setup__(cls):
-        super(SplitProductionStart, cls).__setup__()
-        if 'quantity_readonly' not in cls.quantity.depends:
-            readonly = cls.quantity.states.get('readonly', False)
-            cls.quantity.states.update({
-                    'readonly': Eval('quantity_readonly') | readonly,
-                    })
-            cls.quantity.depends.append('quantity_readonly')
-
-
 class SplitProduction:
     'Split Production'
     __name__ = 'production.split'
@@ -59,5 +41,4 @@ class SplitProduction:
         production = Production(Transaction().context['active_id'])
         if production.product and production.product.serial_number:
             default['quantity'] = 1.0
-            default['quantity_readonly'] = True
         return default
