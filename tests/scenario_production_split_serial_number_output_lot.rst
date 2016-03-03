@@ -172,6 +172,8 @@ Make a production::
     >>> split_production.form.quantity
     1.0
     >>> split_production.form.count = 2
+    >>> split_production.form.create_serial_numbers
+    True
     >>> split_production.execute('split')
     >>> productions = Production.find([])
     >>> len(productions)
@@ -185,3 +187,23 @@ Make a production::
     >>> output_sequence.reload()
     >>> output_sequence.number_next
     3
+
+Split a production without creating serial numbers::
+
+    >>> Production = Model.get('production')
+    >>> production = Production()
+    >>> production.product = product
+    >>> production.bom = bom
+    >>> production.quantity = 4
+    >>> production.save()
+    >>> split_production = Wizard('production.split', [production])
+    >>> split_production.form.quantity
+    1.0
+    >>> split_production.form.count = 2
+    >>> split_production.form.create_serial_numbers = False
+    >>> split_production.execute('split')
+    >>> productions = Production.find([('code', 'like', '2-%')])
+    >>> len(productions)
+    3
+    >>> [o.lot for p in productions for o in p.outputs]
+    [None, None, None]

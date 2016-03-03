@@ -1,0 +1,11 @@
+# 
+msgid ""
+msgstr "Content-Type: text/plain; charset=utf-8\n"
+
+msgctxt "field:production.split.start,create_serial_numbers:"
+msgid "Create Serial Numbers?"
+msgstr "Crear números de serie?"
+
+msgctxt "field:production.split.start,serial_number_product:"
+msgid "Serial Numbers Product"
+msgstr "Producto con número de serie"

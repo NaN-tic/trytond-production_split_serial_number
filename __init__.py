@@ -7,6 +7,7 @@ from .production import *
 def register():
     Pool.register(
         Production,
+        SplitProductionStart,
         module='production_split_serial_number', type_='model')
     Pool.register(
         SplitProduction,
