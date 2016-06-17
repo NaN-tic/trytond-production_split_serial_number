@@ -2,7 +2,7 @@
 # copyright notices and license terms.
 from trytond.model import fields
 from trytond.pool import Pool, PoolMeta
-from trytond.pyson import Eval
+from trytond.pyson import Eval, Equal, Or
 from trytond.transaction import Transaction
 
 __all__ = ['Production', 'SplitProductionStart', 'SplitProduction']
@@ -23,7 +23,7 @@ class Production:
                 continue
             if output.quantity != 1.0 or output.lot:
                 continue
-            if hasattr(output, 'get_production_output_lot'):
+            if hasattr(output.__class__, 'get_production_output_lot'):
                 lot = output.get_production_output_lot()
                 lot.save()
             else:
@@ -37,12 +37,11 @@ class Production:
 class SplitProductionStart:
     __name__ = 'production.split.start'
 
-    serial_number_product = fields.Boolean('Serial Numbers Product')
     create_serial_numbers = fields.Boolean('Create Serial Numbers?',
         states={
-            'invisible': ~Eval('serial_number_product', False),
+            'invisible': ~Equal(Eval('quantity', 0), 1),
             },
-        depends=['serial_number_product'])
+        depends=['quantity'])
 
     @staticmethod
     def default_serial_number_product():
@@ -64,11 +63,14 @@ class SplitProduction:
         production = Production(Transaction().context['active_id'])
         if production.product and production.product.serial_number:
             default['quantity'] = 1.0
-            default['serial_number_product'] = True
             default['create_serial_numbers'] = True
         return default
 
     def transition_split(self):
+        if self.start.quantity == 1:
+            create_serial_numbers = self.start.create_serial_numbers
+        else:
+            create_serial_numbers = False
         with Transaction().set_context(
-                create_serial_numbers=self.start.create_serial_numbers):
+                create_serial_numbers=create_serial_numbers):
             return super(SplitProduction, self).transition_split()
