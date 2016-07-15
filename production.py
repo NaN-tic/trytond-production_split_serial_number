@@ -44,10 +44,6 @@ class SplitProductionStart:
         depends=['quantity'])
 
     @staticmethod
-    def default_serial_number_product():
-        return False
-
-    @staticmethod
     def default_create_serial_numbers():
         return False
 
