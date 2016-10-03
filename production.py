@@ -2,7 +2,7 @@
 # copyright notices and license terms.
 from trytond.model import fields
 from trytond.pool import Pool, PoolMeta
-from trytond.pyson import Eval, Equal, Or
+from trytond.pyson import Eval, Equal
 from trytond.transaction import Transaction
 
 __all__ = ['Production', 'SplitProductionStart', 'SplitProduction']
@@ -12,11 +12,15 @@ __metaclass__ = PoolMeta
 class Production:
     __name__ = 'production'
 
-    def _split_inputs_outputs(self, factor):
+    def _split_moves(self, current_moves, new_production, product2qty,
+            relation_field):
         pool = Pool()
         Lot = pool.get('stock.lot')
-        super(Production, self)._split_inputs_outputs(factor)
-        for output in self.outputs:
+        super(Production, self)._split_moves(current_moves, new_production,
+            product2qty, relation_field)
+        if relation_field != 'production_output':
+            return
+        for output in new_production.outputs:
             if not output.product.serial_number:
                 continue
             if not Transaction().context.get('create_serial_numbers', True):
