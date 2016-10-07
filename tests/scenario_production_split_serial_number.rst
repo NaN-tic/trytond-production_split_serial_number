@@ -150,8 +150,8 @@ Make a production::
     >>> lot2.number
     u'2'
     >>> product_sequence.reload()
-    >>> product_sequence.number_next
-    3L
+    >>> int(product_sequence.number_next)
+    3
 
 Split a production without creating serial numbers::
 

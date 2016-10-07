@@ -161,8 +161,8 @@ Make a production::
     >>> lot2.number
     u'2'
     >>> output_sequence.reload()
-    >>> output_sequence.number_next
-    3L
+    >>> int(output_sequence.number_next)
+    3
 
 Split a production without creating serial numbers::
 
