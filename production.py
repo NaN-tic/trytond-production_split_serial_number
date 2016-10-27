@@ -12,20 +12,20 @@ __metaclass__ = PoolMeta
 class Production:
     __name__ = 'production'
 
-    def _split_moves(self, current_moves, new_production, product2qty,
-            relation_field):
+    def split(self, quantity, uom, count=None):
+        productions = super(Production, self).split(quantity, uom, count=count)
+        if Transaction().context.get('create_serial_numbers', True):
+            for production in productions:
+                production.add_serial_number_lot()
+        return productions
+
+    def add_serial_number_lot(self):
         pool = Pool()
         Lot = pool.get('stock.lot')
-        super(Production, self)._split_moves(current_moves, new_production,
-            product2qty, relation_field)
-        if relation_field != 'production_output':
-            return
-        for output in new_production.outputs:
-            if not output.product.serial_number:
-                continue
-            if not Transaction().context.get('create_serial_numbers', True):
-                continue
+        for output in self.outputs:
             if output.quantity != 1.0 or output.lot:
+                continue
+            if not output.product.serial_number:
                 continue
             if hasattr(output.__class__, 'get_production_output_lot'):
                 lot = output.get_production_output_lot()
