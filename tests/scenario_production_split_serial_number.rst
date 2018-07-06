@@ -8,7 +8,9 @@ Imports::
     >>> from dateutil.relativedelta import relativedelta
     >>> from decimal import Decimal
     >>> from proteus import config, Model, Wizard
-    >>> from trytond.tests.tools import activate_modules
+    >>> from trytond.tests.tools import activate_modules, set_user
+    >>> from trytond.modules.party_company.tests.test_party_company import (
+    ...     set_company)
     >>> from trytond.modules.company.tests.tools import create_company, \
     ...     get_company
     >>> today = datetime.date.today()
@@ -17,7 +19,7 @@ Imports::
 
 Install production_split_serial_number Module::
 
-    >>> config = activate_modules('product_cost_plan')
+    >>> config = activate_modules('production_split_serial_number')
 
 Create company::
 
@@ -27,6 +29,7 @@ Create company::
 Create product::
 
     >>> Sequence = Model.get('ir.sequence')
+    >>> product_sequence, = Sequence.find(['code', '=', 'stock.lot'])
     >>> ProductUom = Model.get('product.uom')
     >>> unit, = ProductUom.find([('name', '=', 'Unit')])
     >>> ProductTemplate = Model.get('product.template')
@@ -39,8 +42,6 @@ Create product::
     >>> template.type = 'goods'
     >>> template.list_price = Decimal(30)
     >>> template.serial_number = True
-    >>> product_sequence = Sequence(code='stock.lot', name='Product Sequence')
-    >>> product_sequence.save()
     >>> template.lot_sequence = product_sequence
     >>> template.save()
     >>> product.template = template
