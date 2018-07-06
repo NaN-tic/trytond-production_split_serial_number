@@ -25,7 +25,7 @@ class Production:
         for output in self.outputs:
             if output.quantity != 1.0 or output.lot:
                 continue
-            if not output.product.serial_number:
+            if not output.product.template.serial_number:
                 continue
             if hasattr(output.__class__, 'get_production_output_lot'):
                 lot = output.get_production_output_lot()
@@ -62,7 +62,7 @@ class SplitProduction:
         Production = pool.get('production')
         default = super(SplitProduction, self).default_start(fields)
         production = Production(Transaction().context['active_id'])
-        if production.product and production.product.serial_number:
+        if production.product and production.product.template.serial_number:
             default['quantity'] = 1.0
             default['create_serial_numbers'] = True
         return default
