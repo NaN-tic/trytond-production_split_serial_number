@@ -117,7 +117,7 @@ Create an Inventory::
     >>> inventory.save()
     >>> Inventory.confirm([inventory.id], config.context)
     >>> inventory.state
-    u'done'
+    'done'
 
 Configure production sequence::
 
@@ -151,9 +151,9 @@ Make a production::
     >>> lots = [o.lot for p in productions for o in p.outputs if o.lot]
     >>> lot1, lot2  = sorted(lots, key=lambda a: int(a.number))
     >>> lot1.number
-    u'1'
+    '1'
     >>> lot2.number
-    u'2'
+    '2'
     >>> output_sequence.reload()
     >>> int(output_sequence.number_next)
     3

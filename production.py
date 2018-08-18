@@ -8,8 +8,7 @@ from trytond.transaction import Transaction
 __all__ = ['Production', 'SplitProductionStart', 'SplitProduction']
 
 
-class Production:
-    __metaclass__ = PoolMeta
+class Production(metaclass=PoolMeta):
     __name__ = 'production'
 
     def split(self, quantity, uom, count=None):
@@ -38,8 +37,7 @@ class Production:
                 output.save()
 
 
-class SplitProductionStart:
-    __metaclass__ = PoolMeta
+class SplitProductionStart(metaclass=PoolMeta):
     __name__ = 'production.split.start'
 
     create_serial_numbers = fields.Boolean('Create Serial Numbers?',
@@ -53,8 +51,7 @@ class SplitProductionStart:
         return False
 
 
-class SplitProduction:
-    __metaclass__ = PoolMeta
+class SplitProduction(metaclass=PoolMeta):
     __name__ = 'production.split'
 
     def default_start(self, fields):
