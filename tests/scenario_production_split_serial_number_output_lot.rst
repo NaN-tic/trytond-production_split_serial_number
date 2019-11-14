@@ -28,7 +28,6 @@ Create company::
 Create product::
 
     >>> ProductUom = Model.get('product.uom')
-    >>> tType = Model.get('stock.lot.type')
     >>> unit, = ProductUom.find([('name', '=', 'Unit')])
     >>> ProductTemplate = Model.get('product.template')
     >>> Product = Model.get('product.product')
