@@ -5,8 +5,6 @@ from trytond.pool import Pool, PoolMeta
 from trytond.pyson import Eval, Equal
 from trytond.transaction import Transaction
 
-__all__ = ['Production', 'SplitProductionStart', 'SplitProduction']
-
 
 class Production(metaclass=PoolMeta):
     __name__ = 'production'
