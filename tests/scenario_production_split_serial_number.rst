@@ -26,10 +26,24 @@ Create company::
     >>> _ = create_company()
     >>> company = get_company()
 
-Create product::
+Create lot sequence::
 
     >>> Sequence = Model.get('ir.sequence')
-    >>> product_sequence, = Sequence.find(['code', '=', 'stock.lot'])
+    >>> SequenceType = Model.get('ir.sequence.type')
+    >>> sequence_type, = SequenceType.find(
+    ...     [('name', '=', "Stock Lot")], limit=1)
+    >>> sequence = Sequence(name="Lot", sequence_type=sequence_type)
+    >>> sequence.save()
+
+Set default sequence::
+
+    >>> Configuration = Model.get('product.configuration')
+    >>> configuration = Configuration(1)
+    >>> configuration.default_lot_sequence = sequence
+    >>> configuration.save()
+
+Create product::
+
     >>> ProductUom = Model.get('product.uom')
     >>> unit, = ProductUom.find([('name', '=', 'Unit')])
     >>> ProductTemplate = Model.get('product.template')
@@ -42,7 +56,6 @@ Create product::
     >>> template.type = 'goods'
     >>> template.list_price = Decimal(30)
     >>> template.serial_number = True
-    >>> template.lot_sequence = product_sequence
     >>> template.save()
     >>> product.template = template
     >>> product.cost_price = Decimal(20)
@@ -144,9 +157,9 @@ Make a production::
     '1'
     >>> lot2.number
     '2'
-    >>> product_sequence.reload()
-    >>> int(product_sequence.number_next)
-    3
+    >>> sequence.reload()
+    >>> sequence.number_next == 3
+    True
 
 Split a production without creating serial numbers::
 

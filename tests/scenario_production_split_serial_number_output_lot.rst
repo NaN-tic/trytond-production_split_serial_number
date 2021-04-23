@@ -39,6 +39,7 @@ Create product::
     >>> template.producible = True
     >>> template.list_price = Decimal(30)
     >>> template.serial_number = True
+    >>> template.lot_sequence = None
     >>> template.save()
     >>> product.template = template
     >>> product.cost_price = Decimal(20)
@@ -52,6 +53,7 @@ Create Components::
     >>> template1.default_uom = unit
     >>> template1.type = 'goods'
     >>> template1.list_price = Decimal(5)
+    >>> template1.lot_sequence = None
     >>> template1.save()
     >>> component1.template = template1
     >>> component1.cost_price = Decimal(1)
@@ -65,6 +67,7 @@ Create Components::
     >>> template2.default_uom = meter
     >>> template2.type = 'goods'
     >>> template2.list_price = Decimal(7)
+    >>> template2.lot_sequence = None
     >>> template2.save()
     >>> component2.template = template2
     >>> component2.cost_price = Decimal(5)
@@ -118,14 +121,20 @@ Create an Inventory::
     >>> inventory.state
     'done'
 
-Configure production sequence::
+Create lot sequence::
 
     >>> Sequence = Model.get('ir.sequence')
+    >>> SequenceType = Model.get('ir.sequence.type')
+    >>> sequence_type, = SequenceType.find(
+    ...     [('name', '=', "Stock Lot")], limit=1)
+    >>> output_sequence = Sequence(name="Lot", sequence_type=sequence_type)
+    >>> output_sequence.save()
+
+Configure production sequence::
+
     >>> Config = Model.get('production.configuration')
     >>> config = Config()
     >>> config.output_lot_creation = 'done'
-    >>> output_sequence = Sequence(code='stock.lot', name='Output Sequence')
-    >>> output_sequence.save()
     >>> config.output_lot_sequence = output_sequence
     >>> config.save()
 
@@ -154,8 +163,8 @@ Make a production::
     >>> lot2.number
     '2'
     >>> output_sequence.reload()
-    >>> int(output_sequence.number_next)
-    3
+    >>> output_sequence.number_next == 3
+    True
 
 Split a production without creating serial numbers::
 
