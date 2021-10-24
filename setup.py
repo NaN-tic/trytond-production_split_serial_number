@@ -53,7 +53,6 @@ requires.append(get_require_version('trytond'))
 
 tests_require = [
     get_require_version('proteus'),
-    get_require_version('nantic-production_external_party')
 ]
 
 series = '%s.%s' % (major_version, minor_version)
