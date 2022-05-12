@@ -9,8 +9,6 @@ Imports::
     >>> from decimal import Decimal
     >>> from proteus import config, Model, Wizard
     >>> from trytond.tests.tools import activate_modules, set_user
-    >>> from trytond.modules.party_company.tests.test_party_company import (
-    ...     set_company)
     >>> from trytond.modules.company.tests.tools import create_company, \
     ...     get_company
     >>> today = datetime.date.today()
