@@ -133,7 +133,7 @@ Create lot sequence::
 Configure production sequence::
 
     >>> Config = Model.get('production.configuration')
-    >>> config = Config()
+    >>> config = Config(1)
     >>> config.output_lot_creation = 'done'
     >>> config.output_lot_sequence = output_sequence
     >>> config.save()
