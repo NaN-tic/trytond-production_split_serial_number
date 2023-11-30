@@ -7,7 +7,7 @@
             <field name="model">production.split.start</field>
             <field name="name">split_start_form</field>
             <field name="inherit"
-                ref="production_split.split_start_view_form"/>
+                ref="production_split_unexploded.split_start_view_form"/>
         </record>
 
     </data>
