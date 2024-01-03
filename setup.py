@@ -12,7 +12,7 @@ PREFIX = 'nantic'
 MODULE2PREFIX = {
     'stock_serial_number': 'nantic',
     'stock_lot_sequence': 'nantic',
-    'production_split': 'nantic',
+    'production_split_unexploded': 'nantic',
     'production_output_lot': 'nantic',
     }
 
@@ -75,8 +75,8 @@ dependency_links = [
             'series': series,
             }),
     ('hg+https://bitbucket.org/nantic/'
-        'trytond-production_split@%(branch)s'
-        '#egg=nantic-production_split-%(series)s' % {
+        'trytond-production_split_unexploded@%(branch)s'
+        '#egg=nantic-production_split_unexploded-%(series)s' % {
             'branch': branch,
             'series': series,
             }),
