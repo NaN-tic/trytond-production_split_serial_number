@@ -41,8 +41,7 @@ class SplitProductionStart(metaclass=PoolMeta):
     create_serial_numbers = fields.Boolean('Create Serial Numbers?',
         states={
             'invisible': ~Equal(Eval('quantity', 0), 1),
-            },
-        depends=['quantity'])
+            })
 
     @staticmethod
     def default_create_serial_numbers():
