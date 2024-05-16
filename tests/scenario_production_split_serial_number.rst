@@ -24,21 +24,11 @@ Create company::
     >>> _ = create_company()
     >>> company = get_company()
 
-Create lot sequence::
-
-    >>> Sequence = Model.get('ir.sequence')
-    >>> SequenceType = Model.get('ir.sequence.type')
-    >>> sequence_type, = SequenceType.find(
-    ...     [('name', '=', "Stock Lot")], limit=1)
-    >>> sequence = Sequence(name="Lot", sequence_type=sequence_type)
-    >>> sequence.save()
-
-Set default sequence::
+Get default sequence::
 
     >>> Configuration = Model.get('product.configuration')
     >>> configuration = Configuration(1)
-    >>> configuration.default_lot_sequence = sequence
-    >>> configuration.save()
+    >>> sequence = configuration.default_lot_sequence
 
 Create product::
 
