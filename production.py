@@ -9,8 +9,8 @@ from trytond.transaction import Transaction
 class Production(metaclass=PoolMeta):
     __name__ = 'production'
 
-    def split(self, quantity, uom, count=None):
-        productions = super(Production, self).split(quantity, uom, count=count)
+    def split(self, quantity, unit, count=None):
+        productions = super().split(quantity, unit, count=count)
         if Transaction().context.get('create_serial_numbers', True):
             for production in productions:
                 production.add_serial_number_lot()
