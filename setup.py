@@ -146,9 +146,4 @@ setup(name='%s_%s' % (PREFIX, MODULE),
     test_suite='tests',
     test_loader='trytond.test_loader:Loader',
     tests_require=tests_require,
-    use_2to3=True,
-    convert_2to3_doctests=[
-        'tests/scenario_production_split_serial_number_ouput_lot.rst',
-        'tests/scenario_production_split_serial_number.rst',
-        ],
     )
