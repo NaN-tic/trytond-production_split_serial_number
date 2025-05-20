@@ -9,12 +9,7 @@ from configparser import ConfigParser
 
 MODULE = 'production_split_serial_number'
 PREFIX = 'nantic'
-MODULE2PREFIX = {
-    'stock_serial_number': 'nantic',
-    'stock_lot_sequence': 'nantic',
-    'production_split_unexploded': 'nantic',
-    'production_output_lot': 'nantic',
-    }
+MODULE2PREFIX = {}
 
 
 def read(fname):
@@ -45,7 +40,7 @@ major_version = int(major_version)
 minor_version = int(minor_version)
 
 requires = []
-for dep in info.get('depends', []) + ['production_output_lot']:
+for dep in info.get('depends', []):
     if not re.match(r'(ir|res)(\W|$)', dep):
         prefix = MODULE2PREFIX.get(dep, 'trytond')
         requires.append(get_require_version('%s_%s' % (prefix, dep)))
@@ -61,32 +56,7 @@ if minor_version % 2:
 else:
     branch = series
 
-dependency_links = [
-    ('hg+https://bitbucket.org/nantic/'
-        'trytond-stock_serial_number@%(branch)s'
-        '#egg=nantic-stock_serial_number-%(series)s' % {
-            'branch': branch,
-            'series': series,
-            }),
-    ('hg+https://bitbucket.org/nantic/'
-        'trytond-stock_lot_sequence@%(branch)s'
-        '#egg=nantic-stock_lot_sequence-%(series)s' % {
-            'branch': branch,
-            'series': series,
-            }),
-    ('hg+https://bitbucket.org/nantic/'
-        'trytond-production_split_unexploded@%(branch)s'
-        '#egg=nantic-production_split_unexploded-%(series)s' % {
-            'branch': branch,
-            'series': series,
-            }),
-    ('hg+https://bitbucket.org/nantic/'
-        'trytond-production_output_lot@%(branch)s'
-        '#egg=nantic-production_output_lot-%(series)s' % {
-            'branch': branch,
-            'series': series,
-            }),
-    ]
+dependency_links = []
 
 if minor_version % 2:
     # Add development index for testing with proteus
@@ -107,7 +77,7 @@ setup(name='%s_%s' % (PREFIX, MODULE),
         ],
     package_data={
         'trytond.modules.%s' % MODULE: (info.get('xml', [])
-            + ['tryton.cfg', 'view/*.xml', 'locale/*.po', 'tests/*.rst']),
+            + ['tryton.cfg', 'locale/*.po', 'tests/*.rst']),
         },
     classifiers=[
         'Development Status :: 5 - Production/Stable',
